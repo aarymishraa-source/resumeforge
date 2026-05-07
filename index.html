@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>ResumeForge — Premium Resume Builder</title>
+
+    <!-- google fonts - Syne for headings, Space Grotesk for body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+    <div class="app">
+
+        <!-- ============== SIDEBAR (form area) ============== -->
+        <aside class="sidebar">
+            <header class="sidebar-top">
+                <div class="brand">
+                    <h1>Resume<span class="brand-dot">.</span>Forge</h1>
+                    <span class="tagline">Craft something premium</span>
+                </div>
+
+                <select id="savedResumes" class="saved-select" aria-label="Saved resumes">
+                    <option value="">— Saved resumes —</option>
+                </select>
+            </header>
+
+            <!-- progress bar - kitna fill hua hai resume -->
+            <div class="progress-card">
+                <div class="progress-label">
+                    <span>Completion</span>
+                    <span id="progressPct">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div id="progressFill" class="progress-fill" style="width:0%"></div>
+                </div>
+            </div>
+
+            <!-- template picker - dropdown ki jagah visual cards -->
+            <div class="section-label">Choose a template</div>
+            <div class="template-cards" role="radiogroup" aria-label="Template">
+                <button type="button" class="template-card active" data-tpl="modern" role="radio" aria-checked="true">
+                    <div class="card-thumb thumb-modern">
+                        <div class="t-line t-name"></div>
+                        <div class="t-line t-row"></div>
+                        <div class="t-line t-row"></div>
+                        <div class="t-line t-row short"></div>
+                    </div>
+                    <span>Modern</span>
+                </button>
+                <button type="button" class="template-card" data-tpl="classic" role="radio" aria-checked="false">
+                    <div class="card-thumb thumb-classic">
+                        <div class="t-line t-name center"></div>
+                        <div class="t-rule"></div>
+                        <div class="t-line t-row"></div>
+                        <div class="t-line t-row"></div>
+                        <div class="t-line t-row short"></div>
+                    </div>
+                    <span>Classic</span>
+                </button>
+                <button type="button" class="template-card" data-tpl="minimal" role="radio" aria-checked="false">
+                    <div class="card-thumb thumb-minimal">
+                        <div class="t-line t-name short"></div>
+                        <div class="t-line t-row"></div>
+                        <div class="t-line t-row"></div>
+                        <div class="t-line t-row short"></div>
+                    </div>
+                    <span>Minimal</span>
+                </button>
+            </div>
+
+            <!-- hidden select - script.js iska value padhta hai, isliye remove nahi kar sakte -->
+            <select id="templatePicker" hidden aria-hidden="true">
+                <option value="modern" selected>Modern</option>
+                <option value="classic">Classic</option>
+                <option value="minimal">Minimal</option>
+            </select>
+
+            <!-- ============= form blocks (collapsible) ============= -->
+
+            <div class="form-block" data-open="true">
+                <button class="block-header" type="button">
+                    <span>Profile Photo</span>
+                    <span class="chev">▾</span>
+                </button>
+                <div class="block-body">
+                    <div class="photo-row">
+                        <div class="photo-preview" id="photoPreview">
+                            <span style="color:#94a3b8; font-size:11px;">No photo</span>
+                        </div>
+                        <div class="photo-controls">
+                            <input type="file" id="photoInput" accept="image/*" />
+                            <button type="button" id="removePhotoBtn" class="btn btn-ghost btn-sm">Remove</button>
+                            <p class="hint">JPG / PNG, under 2MB works best</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-block" data-open="true">
+                <button class="block-header" type="button">
+                    <span>Personal Details</span>
+                    <span class="chev">▾</span>
+                </button>
+                <div class="block-body">
+                    <div class="grid-2">
+                        <div class="field">
+                            <label class="field-label" for="name">Full Name *</label>
+                            <input type="text" id="name" placeholder="Jane Doe" />
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="email">Email</label>
+                            <input type="email" id="email" placeholder="jane@example.com" />
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="phone">Phone</label>
+                            <input type="tel" id="phone" placeholder="+1 555 123 4567" />
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="college">College / University</label>
+                            <input type="text" id="college" placeholder="State University" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="summary">Professional Summary</label>
+                        <textarea id="summary" rows="3" placeholder="A short summary about yourself..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-block" data-open="true">
+                <button class="block-header" type="button">
+                    <span>Skills</span>
+                    <span class="chev">▾</span>
+                </button>
+                <div class="block-body">
+                    <div class="field">
+                        <label class="field-label" for="skills">Skills (seperate with commas)</label>
+                        <textarea id="skills" rows="2" placeholder="Python, JavaScript, SQL, Communication"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-block" data-open="false">
+                <button class="block-header" type="button">
+                    <span>Experience</span>
+                    <span class="chev">▾</span>
+                </button>
+                <div class="block-body">
+                    <div class="field">
+                        <label class="field-label" for="experience">One entry per line, use - for bullets</label>
+                        <textarea id="experience" rows="6" placeholder="Software Engineer at Acme Co. (2022 - Present)
+- Built scalable web services in Python
+- Led migration to microservices"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-block" data-open="false">
+                <button class="block-header" type="button">
+                    <span>Education</span>
+                    <span class="chev">▾</span>
+                </button>
+                <div class="block-body">
+                    <div class="field">
+                        <label class="field-label" for="education">One entry per line</label>
+                        <textarea id="education" rows="4" placeholder="B.Sc. Computer Science, State University (2018 - 2022)
+GPA: 3.8/4.0"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- action buttons -->
+            <div class="actions">
+                <button id="saveBtn" class="btn btn-primary">Save Resume</button>
+                <button id="updateBtn" class="btn btn-primary" style="display:none">Update</button>
+                <button id="deleteBtn" class="btn btn-danger" style="display:none">Delete</button>
+                <button id="newBtn" class="btn btn-ghost">New</button>
+                <button id="printBtn" class="btn btn-ghost">Print</button>
+                <button id="pdfBtn" class="btn btn-pdf">↓ Download PDF</button>
+            </div>
+
+            <div id="statusMsg" class="status-msg"></div>
+        </aside>
+
+        <!-- ============== PREVIEW PANE ============== -->
+        <main class="preview-pane">
+            <div class="preview-header no-print">
+                <h2 class="pane-title">Live Preview</h2>
+                <span class="preview-meta" id="previewMeta">Modern template</span>
+            </div>
+
+            <div id="resumePreview" class="resume-paper template-modern">
+                <header class="resume-header">
+                    <img id="pvPhoto" class="pv-photo" alt="" style="display:none" />
+                    <div class="resume-header-text">
+                        <h1 id="pvName">Your Name</h1>
+                        <div class="contact-line">
+                            <span id="pvEmail"></span>
+                            <span id="pvEmailSep" class="sep" style="display:none">•</span>
+                            <span id="pvPhone"></span>
+                            <span id="pvPhoneSep" class="sep" style="display:none">•</span>
+                            <span id="pvCollege"></span>
+                        </div>
+                    </div>
+                </header>
+
+                <section id="pvSummarySection" class="resume-section" style="display:none">
+                    <h2>Summary</h2>
+                    <p id="pvSummary"></p>
+                </section>
+
+                <section id="pvSkillsSection" class="resume-section" style="display:none">
+                    <h2>Skills</h2>
+                    <ul id="pvSkills" class="skills-list"></ul>
+                </section>
+
+                <section id="pvExperienceSection" class="resume-section" style="display:none">
+                    <h2>Experience</h2>
+                    <div id="pvExperience"></div>
+                </section>
+
+                <section id="pvEducationSection" class="resume-section" style="display:none">
+                    <h2>Education</h2>
+                    <div id="pvEducation"></div>
+                </section>
+            </div>
+        </main>
+
+        <!-- floating save button - jab changes ho tab hi dikhta hai -->
+        <button id="floatingSave" class="floating-save no-print" type="button" aria-label="Save changes">
+            <span class="float-dot"></span>
+            <span>Save Changes</span>
+        </button>
+    </div>
+
+    <!-- main logic - DON'T touch this file -->
+    <script src="/script.js"></script>
+
+    <!-- new UI behaviour - collapsibles, template cards, progress bar, floating button -->
+    <script>
+    (function () {
+        "use strict";
+
+        console.log("[ResumeForge] UI script init");
+
+        // ---------- collapsible form blocks ----------
+        // har header pe click hone pe data-open toggle karo
+        document.querySelectorAll(".block-header").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var block = btn.closest(".form-block");
+                var isOpen = block.dataset.open === "true";
+                block.dataset.open = isOpen ? "false" : "true";
+            });
+        });
+
+        // ---------- template cards <-> hidden <select> ----------
+        var hiddenSelect = document.getElementById("templatePicker");
+        var cards = document.querySelectorAll(".template-card");
+        var previewMeta = document.getElementById("previewMeta");
+
+        // labels for the small text next to "Live Preview"
+        var TEMPLATE_LABELS = {
+            modern:  "Modern template",
+            classic: "Classic template",
+            minimal: "Minimal template"
+        };
+
+        // active card ko highlight karo aur label update kardo
+        function setActiveCard(value) {
+            cards.forEach(function (c) {
+                var on = c.dataset.tpl === value;
+                c.classList.toggle("active", on);
+                c.setAttribute("aria-checked", on ? "true" : "false");
+            });
+            if (previewMeta) {
+                previewMeta.textContent = TEMPLATE_LABELS[value] || "Modern template";
+            }
+        }
+
+        // card pe click hone pe hidden select ka value badlo + change event fire karo
+        cards.forEach(function (card) {
+            card.addEventListener("click", function () {
+                var tpl = card.dataset.tpl;
+                hiddenSelect.value = tpl;
+                setActiveCard(tpl);
+                // script.js ka listener tabhi chalega jab change event fire hoga
+                hiddenSelect.dispatchEvent(new Event("change"));
+            });
+        });
+
+        // ---------- progress bar ----------
+        var progressFill = document.getElementById("progressFill");
+        var progressPct  = document.getElementById("progressPct");
+        var progFields = ["name", "email", "phone", "college", "summary", "skills", "experience", "education"];
+
+        function calcProgress() {
+            var filled = 0;
+            progFields.forEach(function (f) {
+                var el = document.getElementById(f);
+                if (el && el.value.trim() !== "") filled++;
+            });
+            // photo bhi count me lete hain
+            var pvPhoto = document.getElementById("pvPhoto");
+            var hasPhoto = pvPhoto && pvPhoto.getAttribute("src") && pvPhoto.style.display !== "none";
+            if (hasPhoto) filled++;
+
+            var total = progFields.length + 1;   // +1 for photo
+            var pct = Math.round((filled / total) * 100);
+            progressFill.style.width = pct + "%";
+            progressPct.textContent = pct + "%";
+        }
+
+        // ---------- floating save button (dirty state) ----------
+        var floating   = document.getElementById("floatingSave");
+        var saveBtn    = document.getElementById("saveBtn");
+        var updateBtn  = document.getElementById("updateBtn");
+        var newBtn     = document.getElementById("newBtn");
+        var deleteBtn  = document.getElementById("deleteBtn");
+        var savedSelect = document.getElementById("savedResumes");
+
+        // current state ka snapshot - dirty check ke liye
+        function captureState() {
+            var s = {};
+            progFields.forEach(function (f) {
+                s[f] = document.getElementById(f).value;
+            });
+            s.tpl = hiddenSelect.value;
+            var pv = document.getElementById("pvPhoto");
+            s.photo = (pv && pv.getAttribute("src")) ? pv.getAttribute("src") : "";
+            return JSON.stringify(s);
+        }
+
+        var baseline = captureState();
+
+        function isDirty() {
+            return captureState() !== baseline;
+        }
+
+        function refreshDirty() {
+            floating.classList.toggle("show", isDirty());
+        }
+
+        // save / load ke baad baseline reset karna padta hai (after API call settles)
+        function scheduleBaselineReset(delay) {
+            setTimeout(function () {
+                baseline = captureState();
+                refreshDirty();
+            }, delay || 750);
+        }
+
+        // saari state-changing buttons pe baseline reset hook
+        saveBtn.addEventListener("click",   function () { scheduleBaselineReset(800); });
+        updateBtn.addEventListener("click", function () { scheduleBaselineReset(800); });
+        deleteBtn.addEventListener("click", function () { scheduleBaselineReset(900); });
+        newBtn.addEventListener("click",    function () { scheduleBaselineReset(150); });
+        savedSelect.addEventListener("change", function () { scheduleBaselineReset(800); });
+
+        floating.addEventListener("click", function () {
+            // jo button visible hai usko click karo
+            if (updateBtn.style.display === "none") {
+                saveBtn.click();
+            } else {
+                updateBtn.click();
+            }
+        });
+
+        // ---------- input changes - turant update ----------
+        progFields.forEach(function (f) {
+            var el = document.getElementById(f);
+            if (el) {
+                el.addEventListener("input", function () {
+                    calcProgress();
+                    refreshDirty();
+                });
+            }
+        });
+
+        // poll - taaki script.js ke programmatic changes (loadResume, clearForm) bhi pakde
+        // input event nahi fire hota jab .value programmatically set ho
+        setInterval(function () {
+            setActiveCard(hiddenSelect.value);
+            calcProgress();
+            refreshDirty();
+        }, 350);
+
+        // pehli baar render
+        setActiveCard(hiddenSelect.value);
+        calcProgress();
+        refreshDirty();
+    })();
+    </script>
+</body>
+</html>

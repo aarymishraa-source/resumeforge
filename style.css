@@ -1,0 +1,1056 @@
+/* ResumeForge - main stylesheet
+   navy sidebar + white preview + orange accents
+   - Arpit
+*/
+
+* { box-sizing: border-box; }
+
+/* horizontal scroll kabhi bhi nahi chahiye - safety net */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+:root {
+    --navy:        #0f172a;
+    --navy-2:      #131c33;
+    --navy-3:      #1e293b;
+    --navy-4:      #334155;
+    --navy-line:   rgba(255, 255, 255, 0.08);
+    --navy-line-2: rgba(255, 255, 255, 0.14);
+
+    --orange:      #f97316;
+    --orange-2:    #fb923c;
+    --orange-hov:  #ea580c;
+    --orange-soft: rgba(249, 115, 22, 0.14);
+    --orange-glow: rgba(249, 115, 22, 0.35);
+
+    --white:       #ffffff;
+    --paper-bg:    #eef2f7;
+
+    --text-light:  #e2e8f0;
+    --text-mid:    #cbd5e1;
+    --text-dim:    #94a3b8;
+    --text-faint:  #64748b;
+
+    --danger:      #ef4444;
+    --danger-hov:  #dc2626;
+    --success:     #10b981;
+
+    --radius:      12px;
+    --radius-sm:   8px;
+    --transition:  0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper-bg);
+    color: var(--navy);
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, .display-font {
+    font-family: 'Syne', 'Space Grotesk', sans-serif;
+}
+
+button { font-family: inherit; }
+
+/* ============================================== */
+/* App layout - desktop wala default              */
+/* ============================================== */
+
+.app {
+    display: grid;
+    grid-template-columns: 440px minmax(0, 1fr);
+    height: 100vh;
+}
+
+.sidebar {
+    background: var(--navy);
+    color: var(--text-light);
+    padding: 30px 26px 130px;
+    overflow-y: auto;
+    height: 100vh;
+    border-right: 1px solid var(--navy-line);
+    /* custom scrollbar - thoda subtle */
+    scrollbar-width: thin;
+    scrollbar-color: var(--navy-4) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 8px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--navy-3); border-radius: 4px; }
+.sidebar::-webkit-scrollbar-thumb:hover { background: var(--navy-4); }
+
+.sidebar-top { margin-bottom: 22px; }
+
+.brand h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -1px;
+    line-height: 1;
+    word-break: break-word;
+}
+.brand .brand-dot {
+    color: var(--orange);
+    display: inline-block;
+    transform: translateY(-2px);
+}
+.brand .tagline {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.saved-select {
+    width: 100%;
+    margin-top: 18px;
+    padding: 11px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--navy-3);
+    border: 1px solid var(--navy-line);
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color var(--transition);
+}
+.saved-select:hover { border-color: var(--navy-line-2); }
+.saved-select:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px var(--orange-soft);
+}
+
+/* ============================================== */
+/* Progress card                                  */
+/* ============================================== */
+.progress-card {
+    margin-top: 20px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, rgba(249,115,22,0.10), rgba(249,115,22,0.02));
+    border: 1px solid rgba(249,115,22,0.22);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+}
+.progress-card::after {
+    /* subtle glow effect upar right corner pe */
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(249,115,22,0.15), transparent 70%);
+    pointer-events: none;
+}
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+.progress-label > span:first-child {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    font-weight: 600;
+}
+.progress-label #progressPct {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: -0.5px;
+}
+.progress-track {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange), var(--orange-2));
+    border-radius: 999px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 12px var(--orange-glow);
+}
+
+/* section labels - "Choose a template" type */
+.section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin: 26px 0 10px;
+}
+
+/* ============================================== */
+/* Template cards                                 */
+/* ============================================== */
+.template-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.template-card {
+    background: var(--navy-3);
+    border: 2px solid var(--navy-line);
+    border-radius: var(--radius);
+    padding: 8px 8px 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all var(--transition);
+    color: var(--text-light);
+    font-family: inherit;
+}
+.template-card:hover {
+    border-color: var(--navy-4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+.template-card.active {
+    border-color: var(--orange);
+    background: linear-gradient(135deg, var(--orange-soft), transparent);
+    box-shadow: 0 0 0 1px var(--orange) inset, 0 8px 24px rgba(249,115,22,0.18);
+}
+.template-card span {
+    display: block;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+.template-card.active span { color: var(--orange); }
+
+.card-thumb {
+    width: 100%;
+    aspect-ratio: 5 / 6;
+    border-radius: 4px;
+    background: white;
+    position: relative;
+    overflow: hidden;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+.card-thumb .t-line {
+    height: 2px;
+    background: #cbd5e1;
+    border-radius: 1px;
+}
+.card-thumb .t-line.t-name {
+    height: 5px;
+    background: #1e293b;
+    margin-bottom: 4px;
+}
+.card-thumb .t-line.short  { width: 60%; }
+.card-thumb .t-line.center { margin-left: auto; margin-right: auto; width: 70%; }
+.card-thumb .t-rule {
+    height: 1px;
+    background: #94a3b8;
+    margin: 2px 0 4px;
+}
+
+/* per-template thumb tweaks */
+.thumb-modern {
+    border-top: 6px solid var(--orange);
+    padding-top: 6px;
+}
+.thumb-modern .t-line.t-name { background: #2563eb; width: 70%; }
+.thumb-classic {
+    text-align: center;
+}
+.thumb-classic .t-line.t-name { background: #0f172a; }
+.thumb-minimal {
+    padding-top: 12px;
+    background: #fafafa;
+}
+.thumb-minimal .t-line { background: #e2e8f0; }
+.thumb-minimal .t-line.t-name { background: #475569; height: 4px; }
+
+/* ============================================== */
+/* Form blocks - collapsible                      */
+/* ============================================== */
+.form-block {
+    margin-top: 12px;
+    background: var(--navy-3);
+    border: 1px solid var(--navy-line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color var(--transition);
+}
+.form-block:hover { border-color: var(--navy-line-2); }
+
+.block-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+.block-header:hover { background: rgba(255,255,255,0.025); }
+.block-header:focus { outline: none; }
+.block-header:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--orange);
+}
+
+.chev {
+    font-size: 14px;
+    color: var(--orange);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.form-block[data-open="false"] .chev {
+    transform: rotate(-90deg);
+}
+
+.block-body {
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                padding 0.35s ease;
+    opacity: 1;
+    padding: 4px 18px 18px;
+}
+.form-block[data-open="false"] .block-body {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* ============================================== */
+/* Form fields - inputs aur textareas             */
+/* ============================================== */
+.field { margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+.field-label {
+    display: block;
+    font-size: 10.5px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 11px 13px;
+    background: var(--navy);
+    border: 1px solid var(--navy-line);
+    border-radius: var(--radius-sm);
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+.field input::placeholder,
+.field textarea::placeholder {
+    color: var(--text-faint);
+}
+.field input:hover,
+.field textarea:hover {
+    border-color: var(--navy-line-2);
+}
+.field input:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px var(--orange-soft);
+    background: var(--navy-2);
+}
+.field textarea {
+    resize: vertical;
+    min-height: 60px;
+    line-height: 1.5;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+/* photo upload row */
+.photo-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+.photo-controls {
+    flex: 1;
+    min-width: 0;
+}
+.photo-preview {
+    width: 96px;
+    height: 96px;
+    border: 2px dashed rgba(255,255,255,0.16);
+    border-radius: var(--radius);
+    background: var(--navy);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color var(--transition);
+}
+.photo-preview:hover { border-color: var(--orange); }
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.photo-preview span { color: var(--text-dim) !important; }
+
+.photo-controls input[type="file"] {
+    width: 100%;
+    max-width: 100%;
+    font-size: 12px;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+.photo-controls input[type="file"]::file-selector-button,
+.photo-controls input[type="file"]::-webkit-file-upload-button {
+    background: var(--navy);
+    color: var(--text-light);
+    border: 1px solid var(--navy-line-2);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: all var(--transition);
+}
+.photo-controls input[type="file"]::file-selector-button:hover,
+.photo-controls input[type="file"]::-webkit-file-upload-button:hover {
+    background: var(--orange);
+    border-color: var(--orange);
+}
+
+.hint {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin: 8px 0 0;
+}
+
+/* ============================================== */
+/* Buttons                                        */
+/* ============================================== */
+.btn {
+    padding: 11px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.4px;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.btn:active { transform: translateY(1px); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+.btn-primary {
+    background: var(--orange);
+    color: white;
+}
+.btn-primary:hover {
+    background: var(--orange-hov);
+    box-shadow: 0 8px 20px var(--orange-glow);
+    transform: translateY(-1px);
+}
+
+.btn-ghost {
+    background: var(--navy-3);
+    color: var(--text-light);
+    border: 1px solid var(--navy-line);
+}
+.btn-ghost:hover {
+    background: var(--navy-4);
+    border-color: var(--navy-line-2);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+.btn-danger:hover {
+    background: var(--danger-hov);
+    box-shadow: 0 6px 16px rgba(239,68,68,0.30);
+    transform: translateY(-1px);
+}
+
+.btn-pdf {
+    background: linear-gradient(135deg, var(--orange), var(--orange-2));
+    color: white;
+    font-weight: 700;
+}
+.btn-pdf:hover {
+    box-shadow: 0 12px 28px var(--orange-glow);
+    transform: translateY(-1px);
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 28px;
+}
+.actions .btn-pdf {
+    grid-column: span 2;
+    padding: 14px;
+    font-size: 14px;
+}
+
+/* status message - success ya error dikhane ke liye */
+.status-msg {
+    margin-top: 14px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    display: none;
+    border: 1px solid transparent;
+    font-weight: 500;
+    word-break: break-word;
+}
+.status-msg.success {
+    background: rgba(16,185,129,0.12);
+    border-color: rgba(16,185,129,0.30);
+    color: #34d399;
+    display: block;
+}
+.status-msg.error {
+    background: rgba(239,68,68,0.12);
+    border-color: rgba(239,68,68,0.30);
+    color: #f87171;
+    display: block;
+}
+
+/* ============================================== */
+/* Preview pane - white side                      */
+/* ============================================== */
+.preview-pane {
+    background: var(--paper-bg);
+    padding: 36px 40px 60px;
+    overflow-y: auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.preview-header {
+    width: 100%;
+    max-width: 820px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.preview-header .pane-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--text-faint);
+    margin: 0;
+    font-weight: 600;
+}
+.preview-meta {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--orange);
+    font-weight: 600;
+}
+
+/* the actual resume paper */
+.resume-paper {
+    background: var(--white);
+    width: 100%;
+    max-width: 820px;
+    padding: 52px 60px;
+    border-radius: 6px;
+    box-shadow:
+        0 24px 60px rgba(15,23,42,0.10),
+        0 4px 14px rgba(15,23,42,0.05);
+    color: #111;
+    line-height: 1.55;
+    transition: box-shadow var(--transition);
+}
+.resume-paper:hover {
+    box-shadow:
+        0 30px 70px rgba(15,23,42,0.14),
+        0 6px 18px rgba(15,23,42,0.07);
+}
+
+.resume-header {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+}
+.resume-header-text { flex: 1; min-width: 0; }
+.resume-header h1 {
+    margin: 0 0 4px;
+    font-size: 28px;
+    letter-spacing: 0.5px;
+    word-break: break-word;
+}
+.contact-line {
+    font-size: 13px;
+    color: #475569;
+    word-break: break-word;
+}
+.contact-line .sep { margin: 0 6px; color: #94a3b8; }
+
+.pv-photo {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    flex-shrink: 0;
+}
+
+.resume-section { margin-bottom: 20px; }
+.resume-section h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0 0 8px;
+    color: #1a1a1a;
+}
+.resume-section p { margin: 0; font-size: 14px; word-break: break-word; }
+
+.skills-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.skills-list li {
+    background: #eef2f7;
+    color: #1f2937;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    word-break: break-word;
+}
+
+.entry-line { font-size: 14px; margin-bottom: 4px; word-break: break-word; }
+.entry-line.title { font-weight: bold; }
+.entry-line.bullet { padding-left: 16px; position: relative; }
+.entry-line.bullet::before { content: "•"; position: absolute; left: 4px; }
+
+/* ============================================== */
+/* MODERN template - blue accent, sans serif      */
+/* ============================================== */
+.template-modern {
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+}
+.template-modern .resume-header {
+    border-bottom: 3px solid #2563eb;
+    flex-direction: row-reverse;
+    text-align: left;
+}
+.template-modern .resume-header h1 {
+    color: #2563eb;
+    font-weight: 700;
+    text-transform: none;
+}
+.template-modern .resume-section h2 {
+    color: #2563eb;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 3px;
+}
+.template-modern .pv-photo { border: 3px solid #2563eb; }
+.template-modern .skills-list li {
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-weight: 500;
+}
+
+/* ============================================== */
+/* CLASSIC template - serif, centered             */
+/* ============================================== */
+.template-classic {
+    font-family: "Georgia", "Times New Roman", serif;
+}
+.template-classic .resume-header {
+    flex-direction: column;
+    text-align: center;
+    border-bottom: 2px solid #111;
+    align-items: center;
+}
+.template-classic .resume-header h1 {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 30px;
+    font-family: 'Syne', Georgia, serif;
+}
+.template-classic .pv-photo {
+    border-radius: 50%;
+    border: 2px solid #333;
+}
+.template-classic .resume-section h2 {
+    border-bottom: 1px solid #999;
+    padding-bottom: 3px;
+    color: #1a1a1a;
+}
+.template-classic .skills-list li {
+    background: #f3f3f3;
+    color: #222;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* ============================================== */
+/* MINIMAL template - whitespace, no colors       */
+/* ============================================== */
+.template-minimal {
+    font-family: 'Space Grotesk', "Helvetica", sans-serif;
+    color: #333;
+}
+.template-minimal.resume-paper { padding: 64px 64px; }
+.template-minimal .resume-header {
+    border-bottom: none;
+    padding-bottom: 4px;
+    align-items: flex-start;
+}
+.template-minimal .resume-header h1 {
+    font-weight: 300;
+    font-size: 32px;
+    color: #222;
+    text-transform: none;
+    letter-spacing: 0.5px;
+    font-family: 'Syne', sans-serif;
+}
+.template-minimal .pv-photo {
+    border-radius: 4px;
+    border: none;
+    width: 70px;
+    height: 70px;
+}
+.template-minimal .contact-line {
+    color: #888;
+    font-size: 12px;
+}
+.template-minimal .resume-section { margin-bottom: 28px; }
+.template-minimal .resume-section h2 {
+    color: #333;
+    font-size: 11px;
+    border-bottom: none;
+    margin-bottom: 8px;
+    letter-spacing: 2.5px;
+    font-weight: 600;
+}
+.template-minimal .skills-list li {
+    background: transparent;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 3px 9px;
+}
+
+/* ============================================== */
+/* Floating save button                           */
+/* ============================================== */
+.floating-save {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--orange);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow:
+        0 14px 36px var(--orange-glow),
+        0 0 0 6px rgba(249,115,22,0.10);
+    letter-spacing: 0.5px;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    transform: translateY(80px) scale(0.92);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.3s ease,
+        box-shadow 0.25s,
+        background 0.25s;
+    z-index: 100;
+    max-width: calc(100vw - 32px);
+}
+.floating-save.show {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+.floating-save:hover {
+    background: var(--orange-hov);
+    box-shadow:
+        0 18px 44px var(--orange-glow),
+        0 0 0 8px rgba(249,115,22,0.14);
+}
+.floating-save:active { transform: translateY(2px) scale(0.98); }
+
+.float-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.4);
+    animation: pulse 1.6s ease-in-out infinite;
+    flex-shrink: 0;
+}
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(255,255,255,0.4); }
+    50%      { box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+}
+
+/* ================================================ */
+/* RESPONSIVE - mobile pe layout change             */
+/* ================================================ */
+
+/* big laptop / smaller desktop */
+@media (max-width: 1200px) {
+    .app {
+        grid-template-columns: 400px minmax(0, 1fr);
+    }
+    .sidebar { padding: 26px 22px 130px; }
+    .resume-paper { padding: 44px 42px; }
+    .preview-pane { padding: 30px 28px 50px; }
+}
+
+/* tablet landscape ya chota laptop */
+@media (max-width: 1024px) {
+    .app {
+        grid-template-columns: 360px minmax(0, 1fr);
+    }
+    .sidebar { padding: 22px 18px 120px; }
+    .resume-paper { padding: 38px 32px; }
+    .template-minimal.resume-paper { padding: 44px 38px; }
+    .preview-pane { padding: 26px 22px 60px; }
+    .resume-header h1 { font-size: 26px; }
+}
+
+/* tablet portrait + bada phone - YAHA pe layout stack hota hai
+   sidebar BELOW preview - user ne specifically yaha kaha tha */
+@media (max-width: 900px) {
+    .app {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        height: auto;
+        min-height: 100vh;
+    }
+    /* preview ko upar laao, sidebar niche */
+    .preview-pane {
+        grid-row: 1;
+        height: auto;
+        overflow-y: visible;
+        padding: 22px 20px 28px;
+        background: var(--paper-bg);
+    }
+    .sidebar {
+        grid-row: 2;
+        height: auto;
+        position: static;
+        overflow-y: visible;
+        border-right: none;
+        border-top: 1px solid var(--navy-line);
+        padding: 24px 20px 60px;
+    }
+    .resume-paper { padding: 36px 28px; max-width: 100%; }
+    .preview-header { margin-bottom: 14px; }
+    .floating-save {
+        bottom: 18px;
+        right: 18px;
+        padding: 12px 18px;
+        font-size: 13px;
+    }
+}
+
+/* phone size - 600px se neeche */
+@media (max-width: 600px) {
+    .grid-2 { grid-template-columns: 1fr; }
+
+    /* buttons full width on small screens - jaisa user ne kaha */
+    .actions {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 22px;
+    }
+    .actions .btn-pdf {
+        grid-column: span 1;
+        padding: 13px;
+        font-size: 13px;
+    }
+    .actions .btn { width: 100%; }
+
+    .template-cards { gap: 6px; }
+    .template-card { padding: 6px 6px 8px; }
+    .template-card span { font-size: 9px; letter-spacing: 0.6px; }
+
+    .resume-header {
+        flex-direction: column !important;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .template-classic .resume-header { align-items: center; }
+    .resume-header h1 { font-size: 22px !important; }
+    .resume-paper { padding: 26px 22px; }
+    .template-minimal.resume-paper { padding: 30px 24px; }
+
+    .brand h1 { font-size: 22px; }
+    .preview-header { flex-direction: column; gap: 4px; align-items: flex-start; }
+    .preview-pane { padding: 18px 14px 28px; }
+    .sidebar { padding: 22px 16px 60px; }
+
+    .photo-preview { width: 84px; height: 84px; }
+    .progress-card { padding: 14px 16px; }
+    .progress-label #progressPct { font-size: 18px; }
+
+    .form-block { margin-top: 10px; }
+    .block-header { padding: 13px 14px; font-size: 11px; }
+    .block-body { padding: 4px 14px 16px; }
+
+    .field input, .field textarea { font-size: 14px; }   /* iOS zoom hatake */
+}
+
+/* small phone - iPhone SE etc, 380px aas paas */
+@media (max-width: 400px) {
+    .sidebar { padding: 20px 14px 50px; }
+    .preview-pane { padding: 16px 12px 24px; }
+    .resume-paper { padding: 22px 18px; }
+    .template-minimal.resume-paper { padding: 26px 20px; }
+
+    .brand h1 { font-size: 20px; letter-spacing: -0.5px; }
+    .brand .tagline { font-size: 10px; letter-spacing: 1.5px; }
+
+    .progress-card { padding: 12px 14px; }
+    .progress-label #progressPct { font-size: 17px; }
+    .progress-label > span:first-child { font-size: 10px; }
+
+    .template-cards { gap: 5px; }
+    .template-card { padding: 5px 4px 7px; border-radius: 9px; }
+    .template-card span { font-size: 8.5px; letter-spacing: 0.4px; }
+    .card-thumb { padding: 5px; gap: 2px; }
+    .card-thumb .t-line { height: 1.5px; }
+    .card-thumb .t-line.t-name { height: 4px; }
+
+    .block-header { padding: 12px; font-size: 10.5px; }
+    .block-body { padding: 4px 12px 14px; }
+    .field { margin-bottom: 12px; }
+    .field-label { font-size: 10px; letter-spacing: 1px; }
+
+    .photo-row { flex-direction: column; gap: 12px; }
+    .photo-preview { width: 80px; height: 80px; }
+
+    .resume-header h1 { font-size: 20px !important; }
+    .resume-section h2 { font-size: 13px; }
+    .template-classic .resume-header h1 { font-size: 22px !important; }
+    .template-minimal .resume-header h1 { font-size: 24px !important; }
+
+    .floating-save {
+        bottom: 12px;
+        right: 12px;
+        padding: 10px 16px;
+        font-size: 12px;
+        gap: 8px;
+    }
+    .float-dot { width: 6px; height: 6px; }
+}
+
+/* ultra tiny - 320px (purana iPhone SE etc) */
+@media (max-width: 340px) {
+    .sidebar { padding: 18px 12px 50px; }
+    .preview-pane { padding: 14px 10px 24px; }
+    .resume-paper { padding: 18px 14px; }
+    .template-minimal.resume-paper { padding: 22px 16px; }
+
+    .brand h1 { font-size: 18px; }
+    .resume-header h1 { font-size: 18px !important; }
+
+    .template-cards { grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+    .template-card span { font-size: 8px; }
+
+    .skills-list li { font-size: 12px; padding: 3px 8px; }
+    .entry-line, .resume-section p { font-size: 13px; }
+    .contact-line { font-size: 12px; }
+}
+
+/* ================================================ */
+/* Print - browser pdf wala backup                  */
+/* ================================================ */
+@media print {
+    body, .app { background: white; display: block; height: auto; }
+    .sidebar, .preview-header, .floating-save, .no-print {
+        display: none !important;
+    }
+    .preview-pane {
+        padding: 0;
+        background: white;
+        height: auto;
+        overflow: visible;
+    }
+    .resume-paper {
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        max-width: none;
+    }
+    .skills-list li,
+    .template-modern .resume-section h2,
+    .template-modern .resume-header,
+    .template-modern .resume-header h1,
+    .template-modern .pv-photo {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
